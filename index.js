@@ -14,7 +14,11 @@ var googleAnalyticsConfigDefaults = {
 function analyticsTrackingCode(config) {
   var scriptArray,
       displayFeaturesString,
-      gaConfig = {};
+      gaConfig = {},
+      appName = '',
+      appVersion = '0.0',
+      forceSSL = null,
+      checkProtocolTask = null;
 
   if (config.cookieDomain != null) {
     gaConfig.cookieDomain = config.cookieDomain;
@@ -24,6 +28,18 @@ function analyticsTrackingCode(config) {
   }
   if (config.cookieExpires != null) {
     gaConfig.cookieExpires = config.cookieExpires;
+  }
+  if(config.appName != null) {
+    appName = config.appName;
+  }
+  if(config.appVersion != null) {
+    appVersion = config.appVersion;
+  }
+  if(config.checkProtocolTask != null) {
+    checkProtocolTask = config.checkProtocolTask;
+  }
+  if(config.forceSSL != null) {
+    forceSSL = config.forceSSL;
   }
   if (Object.keys(gaConfig).length === 0) {
     gaConfig = "'auto'";
@@ -39,6 +55,10 @@ function analyticsTrackingCode(config) {
     "})(window,document,'script','//www.google-analytics.com/analytics.js','" + config.globalVariable + "');",
     "",
     "" + config.globalVariable + "('create', '" + config.webPropertyId + "', " + gaConfig + ");",
+    "" + config.globalVariable + "('set', 'appName', '" + appName + "');",
+    "" + config.globalVariable + "('set', 'appVersion', '" + appVersion + "');",
+    "" + config.globalVariable + "('set', 'checkProtocolTask', " + checkProtocolTask + ");",
+    "" + config.globalVariable + "('set', 'forceSSL', " + forceSSL + ");",
     "</script>"
   ];
 
